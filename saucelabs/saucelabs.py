@@ -1,4 +1,10 @@
-from selenium import selenium as SeleniumBase
+from __future__ import absolute_import
+
+# Try global selenium library first
+try:
+    from selenium import selenium as SeleniumBase
+except ImportError:
+    from saucelabs.selenium import selenium as SeleniumBase
 
 import subprocess
 import urlparse
