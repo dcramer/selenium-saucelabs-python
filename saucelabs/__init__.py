@@ -29,8 +29,8 @@ class Selenium(SeleniumBase):
     For more information, see http://saucelabs.com/docs/sauce-connect
     """
     
-    def __init__(self, host, port, browser, browserURL, sauceUsername,
-                 sauceApiKey, sauceConnect=None, os=LINUX, browserVersion=''):
+    def __init__(self, host, port, browser, browserURL, sauceUsername, sauceApiKey, 
+                 sauceDomain=None, sauceConnect=None, os=LINUX, browserVersion=''):
         """
         Additional parameters for Sauce OnDemand:
 
@@ -39,6 +39,7 @@ class Selenium(SeleniumBase):
         - browserVersion: browser version number
         """
         self.sauceConnect = sauceConnect
+        self.sauceDomain = domain
 
         self.serverHost = host
         self.serverPort = port
@@ -63,12 +64,13 @@ class Selenium(SeleniumBase):
     def start_sauce_tunnel(self):
         "Starts the Sauce OnDemand tunnel with sauce-connect."
 
-        domain = urlparse.urlparse(self.browserURL).domain
+        cmd = [self.sauceConnect, '-u', self.sauceUsername, '-k', self.sauceApiKey,
+               '-s', self.host, '-p', self.port]
         
-        self.sauceTunnel = subprocess.Popen([self.sauceConnect, '-u', self.sauceUsername, '-k', self.sauceApiKey,
-                              '-s', self.host, '-p', self.port, '-d', domain], 
-                              stdout=subprocess.PIPE, 
-                              stderr=subprocess.STDOUT)
+        if self.sauceDomain:
+            cmd.extend(['-d', self.sauceDomain])
+        
+        self.sauceTunnel = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     
     def stop_sauce_tunnel(self):
         self.sauceTunnel.terminate()
