@@ -30,7 +30,7 @@ class Selenium(SeleniumBase):
     """
     
     def __init__(self, host, port, browser, browserURL, sauceUsername, sauceApiKey, 
-                 sauceDomain=None, sauceConnect=None, os=LINUX, browserVersion=''):
+                 sauceDomain=None, sauceConnect='sauce_connect', os=LINUX, browserVersion=''):
         """
         Additional parameters for Sauce OnDemand:
 
@@ -38,8 +38,10 @@ class Selenium(SeleniumBase):
         - os: operating system name
         - browserVersion: browser version number
         """
+        self.sauceUsername = sauceUsername
+        self.sauceApiKey = sauceApiKey
         self.sauceConnect = sauceConnect
-        self.sauceDomain = domain
+        self.sauceDomain = sauceDomain
 
         self.serverHost = host
         self.serverPort = port

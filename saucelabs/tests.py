@@ -2,8 +2,6 @@ import saucelabs
 import os
 import unittest
 
-print os.environ.get('SAUCE_USERNAME')
-print os.environ.get('SAUCE_API_KEY')
 assert os.environ.get('SAUCE_USERNAME') and os.environ.get('SAUCE_API_KEY'), \
        'Missing SAUCE_USERNAME or SAUCE_API_KEY environment variables'
 
