@@ -2,9 +2,9 @@ from __future__ import absolute_import
 
 # Try global selenium library first
 try:
-    from selenium import selenium as SeleniumBase
+    from selenium.selenium import selenium as SeleniumBase
 except ImportError:
-    from saucelabs.selenium import selenium as SeleniumBase
+    from saucelabs.selenium.selenium import selenium as SeleniumBase
 
 import simplejson
 import subprocess
@@ -59,7 +59,7 @@ class Selenium(SeleniumBase):
         if browserVersion:
             browserArgs['browser-version'] = browserVersion
     
-        super(Selenium, self).__init__(host, port, simplejson.dumps(browserArgs), browserURL)
+        SeleniumBase.__init__(self, host, port, simplejson.dumps(browserArgs), browserURL)
     
     def start_sauce_tunnel(self):
         "Starts the Sauce OnDemand tunnel with sauce-connect."
@@ -80,12 +80,12 @@ class Selenium(SeleniumBase):
 
         self.start_sauce_tunnel()
 
-        return super(Selenium, self).start(*args, **kwargs)
+        SeleniumBase.start(self, *args, **kwargs)
 
     def stop(self, *args, **kwargs):
         "Completes Sauce OnDemand tunnel connection."
 
-        result = super(Selenium, self).start(*args, **kwargs)
+        result = SeleniumBase.stop(self, *args, **kwargs)
 
         self.stop_sauce_tunnel()
 
