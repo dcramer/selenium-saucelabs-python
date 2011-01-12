@@ -22,7 +22,8 @@ class TestGoogle(unittest.TestCase):
         sel.open("http://www.google.com/webhp")
         sel.type("q", "hello world")
         sel.click("btnG")
-        sel.wait_for_page_to_load(5000)
+        # Google uses ajax now, so we dont need to wait
+        # sel.wait_for_page_to_load(5000)
         self.assertEqual("hello world - Google Search", sel.get_title())
     
     def tearDown(self):
