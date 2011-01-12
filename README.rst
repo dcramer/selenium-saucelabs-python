@@ -18,7 +18,7 @@ Integration is almost identical to the selenium driver::
 
   selenium = saucelabs.Selenium('127.0.0.1', '80', saucelabs.FIREFOX, USERNAME, API_KEY)
 
-The following variables may be passed to the constructor::
+The following variables may be passed to the constructor:
 
 - ``host``
 - ``port``
