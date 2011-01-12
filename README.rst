@@ -5,6 +5,8 @@ For more information about Sauce OnDemand, please visit their website: https://s
 Install
 -------
 
+Installation is easy using pip or setuptools::
+
   pip install selenium-saucelabs-python
   
 Usage
