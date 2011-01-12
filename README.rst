@@ -30,4 +30,8 @@ The following variables may be passed to the constructor:
 - ``os``: defaults to ``LINUX``
 - ``browserVersion``: defaults to ``''``
 
+The ``setJobInfo`` api is also available within the driver::
+
+  selenium.setJobInfo(name='foo', tags=['a', 'b', 'c'], passed=True)
+
 For more information, see the small amount of code in saucelabs/__init__.py, and saucelabs/tests.py
