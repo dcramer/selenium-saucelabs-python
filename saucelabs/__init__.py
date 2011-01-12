@@ -1,4 +1,14 @@
+"""
+selenium-saucelabs-python
+~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
 from __future__ import absolute_import
+
+try:
+    VERSION = __import__('pkg_resources') \
+        .get_distribution('selenium-saucelabs-python').version
+except Exception, e:
+    VERSION = 'unknown'
 
 # Try global selenium library first
 try:
@@ -8,7 +18,6 @@ except ImportError:
 
 import simplejson
 import subprocess
-import urlparse
 
 FIREFOX = 'firefox'
 IE = 'ie'
