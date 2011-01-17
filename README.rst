@@ -16,7 +16,8 @@ Integration is almost identical to the selenium driver::
 
   import saucelabs
 
-  selenium = saucelabs.Selenium('127.0.0.1', '80', saucelabs.FIREFOX, USERNAME, API_KEY)
+  selenium = saucelabs.Selenium(host='127.0.0.1', port='80', browser=saucelabs.FIREFOX, 
+                                sauceUsername=USERNAME, sauceApiKey=API_KEY)
 
 The following variables may be passed to the constructor:
 
@@ -29,6 +30,8 @@ The following variables may be passed to the constructor:
 - ``sauceConnect``: defaults to ``'sauce_connect'``; path to sauce connect binary
 - ``os``: defaults to ``LINUX``
 - ``browserVersion``: defaults to ``''``
+- ``build``: defaults to ``None``
+- ``customData``: defaults to ``{}``
 
 The ``setJobInfo`` api is also available within the driver::
 

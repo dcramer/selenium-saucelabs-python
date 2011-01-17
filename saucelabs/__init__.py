@@ -39,7 +39,8 @@ class Selenium(SeleniumBase):
     """
     
     def __init__(self, host, port, browser, browserURL, sauceUsername, sauceApiKey, 
-                 sauceDomain=None, sauceConnect='sauce_connect', os=LINUX, browserVersion=''):
+                 sauceDomain=None, sauceConnect='sauce_connect', os=LINUX, browserVersion='',
+                 build=None, customData={}):
         """
         Additional parameters for Sauce OnDemand:
 
@@ -64,6 +65,8 @@ class Selenium(SeleniumBase):
             'username': sauceUsername,
             'access-key': sauceApiKey,
             'browser': browser,
+            'build': build,
+            'custom-data': customData,
         }
         if os:
             browserArgs['os'] = os
