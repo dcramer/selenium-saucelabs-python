@@ -112,7 +112,7 @@ class Selenium(SeleniumBase):
 
         self.start_sauce_tunnel()
 
-        result = SeleniumBase.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
+        result = self.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
 
         self.sessionId = result
         print >> sys.stdout, "SauceOnDemandSessionID=" + result
