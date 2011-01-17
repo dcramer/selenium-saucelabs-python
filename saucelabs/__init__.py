@@ -106,6 +106,7 @@ class Selenium(SeleniumBase):
     
     def stop_sauce_tunnel(self):
         self.sauceTunnel.terminate()
+        self.sauceTunnel.wait()
 
     def start(self, *args, **kwargs):
         "Initiates a sauce tunnel followed by a selenium instance."
