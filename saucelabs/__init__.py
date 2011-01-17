@@ -38,7 +38,7 @@ class Selenium(SeleniumBase):
     For more information, see http://saucelabs.com/docs/sauce-connect
     """
     
-    def __init__(self, host, port, browser, browserURL, sauceUsername, sauceApiKey, 
+    def __init__(self, host, port, browser, sauceUsername, sauceApiKey, browserURL='about:blank',
                  sauceDomain=None, sauceConnect='sauce_connect', os=LINUX, browserVersion='',
                  build=None, customData={}):
         """

@@ -19,7 +19,7 @@ class mytest(test):
 
 setup(
     name='selenium-saucelabs-python',
-    version='0.2.0',
+    version='0.2.1',
     author='David Cramer',
     author_email='dcramer@gmail.com',
     url='http://github.com/dcramer/selenium-saucelabs-python',
