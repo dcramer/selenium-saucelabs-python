@@ -48,6 +48,9 @@ class Selenium(SeleniumBase):
         - os: operating system name
         - browserVersion: browser version number
         """
+        assert sauceUsername, 'sauceUsername cannot be empty'
+        assert sauceApiKey, 'sauceApiKey cannot be empty'
+
         self.sauceUsername = sauceUsername
         self.sauceApiKey = sauceApiKey
         self.sauceConnect = sauceConnect
