@@ -26,7 +26,7 @@ The following variables may be passed to the constructor:
 - ``browser``
 - ``sauceUsername``
 - ``sauceApiKey``
-- ``sauceDomain``: defaults to ``None``
+- ``sauceDomain``
 - ``sauceConnect``: defaults to ``'sauce_connect'``; path to sauce connect binary
 - ``os``: defaults to ``LINUX``
 - ``browserVersion``: defaults to ``''``
