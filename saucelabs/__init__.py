@@ -12,7 +12,7 @@ except Exception, e:
 
 # Try global selenium library first
 try:
-    from selenium.selenium import selenium as SeleniumBase
+    from selenium import selenium as SeleniumBase
 except ImportError:
     from saucelabs.selenium.selenium import selenium as SeleniumBase
 
