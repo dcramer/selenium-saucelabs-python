@@ -59,6 +59,7 @@ class Selenium(SeleniumBase):
         self.sauceApiKey = sauceApiKey
         self.sauceConnect = sauceConnect
         self.sauceDomain = sauceDomain
+        self.sauceTunnel = None
 
         self.serverHost = host
         self.serverPort = port
@@ -105,8 +106,9 @@ class Selenium(SeleniumBase):
                 raise Exception('sauce_connect failed to come online in %s seconds' % SAUCE_CONNECT_TIMEOUT)
     
     def stop_sauce_tunnel(self):
-        self.sauceTunnel.terminate()
-        self.sauceTunnel.wait()
+        if self.sauceTunnel:
+            self.sauceTunnel.terminate()
+            self.sauceTunnel.wait()
 
     def start_selenium(self, *args, **kwargs):
         result = self.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
@@ -130,7 +132,7 @@ class Selenium(SeleniumBase):
         "Completes Sauce OnDemand tunnel connection."
 
         result = self.stop_selenium(*args, **kwargs)
-
+        
         self.stop_sauce_tunnel()
 
         return result
