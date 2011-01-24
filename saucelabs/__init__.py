@@ -14,7 +14,7 @@ except Exception, e:
 try:
     from selenium import selenium as SeleniumBase
 except ImportError:
-    from saucelabs.selenium.selenium import selenium as SeleniumBase
+    from saucelabs.selenium import selenium as SeleniumBase
 
 import simplejson
 import subprocess
@@ -108,20 +108,28 @@ class Selenium(SeleniumBase):
         self.sauceTunnel.terminate()
         self.sauceTunnel.wait()
 
+    def start_selenium(self, *args, **kwargs):
+        result = self.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
+
+        self.sessionId = result
+        print >> sys.stdout, "SauceOnDemandSessionID=" + result
+        
+        return result
+
+    def stop_selenium(self, *args, **kwargs):
+        return SeleniumBase.stop(self, *args, **kwargs)
+
     def start(self, *args, **kwargs):
         "Initiates a sauce tunnel followed by a selenium instance."
 
         self.start_sauce_tunnel()
 
-        result = self.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
-
-        self.sessionId = result
-        print >> sys.stdout, "SauceOnDemandSessionID=" + result
+        return self.start_selenium(*args, **kwargs)
 
     def stop(self, *args, **kwargs):
         "Completes Sauce OnDemand tunnel connection."
 
-        result = SeleniumBase.stop(self, *args, **kwargs)
+        result = self.stop_selenium(*args, **kwargs)
 
         self.stop_sauce_tunnel()
 

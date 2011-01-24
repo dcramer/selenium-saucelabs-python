@@ -8,12 +8,13 @@ assert os.environ.get('SAUCE_USERNAME') and os.environ.get('SAUCE_API_KEY'), \
 class TestGoogle(unittest.TestCase):
     def setUp(self):
         self.selenium = saucelabs.Selenium(
-            "localhost",
-            80,
-            saucelabs.FIREFOX,
-            'http://www.google.com/webhp',
-            os.environ['SAUCE_USERNAME'],
-            os.environ['SAUCE_API_KEY'],
+            host="localhost",
+            port=80,
+            browser=saucelabs.FIREFOX,
+            browserURL='http://www.google.com/webhp',
+            sauceDomain='dummydomain.com',
+            sauceUsername=os.environ['SAUCE_USERNAME'],
+            sauceApiKey=os.environ['SAUCE_API_KEY'],
         )
         self.selenium.start()
         
