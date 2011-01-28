@@ -21,7 +21,7 @@ import subprocess
 import sys
 import time
 
-SAUCE_CONNECT_TIMEOUT = 60
+SAUCE_CONNECT_TIMEOUT = 90
 
 FIREFOX = 'firefox'
 IE = 'ie'
@@ -30,6 +30,41 @@ CHROME = 'googlechrome'
 
 LINUX = 'Linux'
 WINDOWS = 'Windows'
+
+class Tunnel(object):
+    def __init__(self, username, apiKey, host, port, domain, bin='sauce_connect'):
+        self.username = username
+        self.apiKey = apiKey
+        self.host = host
+        self.port = port
+        self.domain = domain
+        self.bin = bin
+        self.tunnel = None
+
+    def start(self):
+        cmd = [self.bin, '-u', self.username, '-k', self.apiKey,
+               '-s', self.host, '-p', self.port, '-t', self.port]
+        if isinstance(self.domain, (list, tuple)):
+            for domain in self.domain:
+                cmd.extend(['-d', domain])
+        else:
+            cmd.extend(['-d', self.domain])
+
+        self.tunnel = subprocess.Popen(map(str, cmd), stdout=subprocess.PIPE)
+        start = time.time()
+        while True:
+            line = self.tunnel.stdout.readline()
+            sys.stdout.write(line)
+            if line.strip().endswith('You may start your tests.'):
+                break
+            if time.time() - start > SAUCE_CONNECT_TIMEOUT:
+                self.stop()
+                raise Exception('sauce_connect failed to come online in %s seconds' % SAUCE_CONNECT_TIMEOUT)
+        
+    def stop(self):
+        if self.tunnel:
+            self.tunnel.terminate()
+            self.tunnel.wait()
 
 class Selenium(SeleniumBase):
     """
@@ -85,30 +120,19 @@ class Selenium(SeleniumBase):
     
     def start_sauce_tunnel(self):
         "Starts the Sauce OnDemand tunnel with sauce-connect."
-
-        cmd = [self.sauceConnect, '-u', self.sauceUsername, '-k', self.sauceApiKey,
-               '-s', self.serverHost, '-p', self.serverPort, '-t', self.serverPort]
-        if isinstance(self.sauceDomain, (list, tuple)):
-            for domain in self.sauceDomain:
-                cmd.extend(['-d', domain])
-        else:
-            cmd.extend(['-d', self.sauceDomain])
-        
-        self.sauceTunnel = subprocess.Popen(map(str, cmd), stdout=subprocess.PIPE)
-        start = time.time()
-        while True:
-            line = self.sauceTunnel.stdout.readline()
-            sys.stdout.write(line)
-            if line.strip().endswith('You may start your tests.'):
-                break
-            if time.time() - start > SAUCE_CONNECT_TIMEOUT:
-                self.stop_sauce_tunnel()
-                raise Exception('sauce_connect failed to come online in %s seconds' % SAUCE_CONNECT_TIMEOUT)
+        self.sauceTunnel = Tunnel(
+            username=self.sauceUsername,
+            apiKey=self.sauceApiKey,
+            host=self.serverHost,
+            port=self.serverPort,
+            domain=self.sauceDomain,
+            bin=self.sauceConnect,
+        )
+        self.sauceTunnel.start()
     
     def stop_sauce_tunnel(self):
         if self.sauceTunnel:
-            self.sauceTunnel.terminate()
-            self.sauceTunnel.wait()
+            self.sauceTunnel.stop()
 
     def start_selenium(self, *args, **kwargs):
         result = self.get_string("getNewBrowserSession", [self.browserStartCommand, self.browserURL, self.extensionJs])
